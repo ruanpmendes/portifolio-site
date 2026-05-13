@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engenharia de Dados & Analytics: Simulador de Varejo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F9F8F6;
+      color: #1A1A1A;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .dark body, body.dark {
+      background-color: #0D1117;
+      color: #E6EDF3;
+    }
+
+    /* Btn styles (copiados do index) */
+    .btn-primary {
+      display: inline-block;
+      font-size: 14px; font-weight: 500;
+      padding: 10px 24px; border-radius: 8px;
+      transition: opacity 0.2s, transform 0.15s;
+      text-decoration: none;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: scale(0.985); }
+    
+    .nav-link {
+      font-size: 14px; font-weight: 500;
+      color: #6B7280;
+      transition: color 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-link:hover { color: #1A1A1A; }
+    .dark .nav-link:hover { color: #E6EDF3; }
+  </style>
+</head>
+<body id="body">
+
+<nav class="fixed top-0 left-0 right-0 z-50 border-b bg-opacity-90 backdrop-blur-md" style="border-color:#E5E5E3;" id="navbar">
+  <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+    <a href="index.html" class="nav-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Voltar para o Portfólio
+    </a>
+  </div>
+</nav>
+
+<section class="pt-32 pb-24 px-6 min-h-screen">
+  <div class="max-w-3xl mx-auto">
+    
+    <div class="mb-10 border-b pb-8" style="border-color:#E5E5E3;" id="header-border">
+      <h1 class="text-4xl font-bold tracking-tight mb-4" id="title">Engenharia de Dados & Analytics: Simulador de Varejo</h1>
+      <p class="text-lg leading-relaxed mb-6" style="color:#6B7280;" id="subtitle">
+        Modelagem de ecossistema relacional do zero com automação via Triggers e análise de mais de 40 mil pedidos. Uso de Window Functions avançadas em SQL para extrair KPIs executivos de Churn, Margem e Cross-Sell.
+      </p>
+      
+      <a href="https://app.fabric.microsoft.com/view?r=eyJrIjoiNTVlYTIzMGEtZDgxMy00MTBmLThlMTAtMzI5MjQ3YzZhMGM5IiwidCI6ImQ0ZjBiOGY0LTQ2NTAtNDNmYi05YWFiLWE1YmM4OGRkMDM0NSJ9" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#1A1A1A; color:#FFFFFF;" id="dash-btn">
+        Ver Dashboard Completo
+        <svg class="inline ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+	  
+	    <a href="https://github.com/ruanpmendes/retail-dataset-generator" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#1A1A1A; color:#FFFFFF;" id="github-btn">
+        Repositório no GitHub
+        <svg class="inline ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+
+      <div class="mt-8 rounded-xl overflow-hidden border shadow-sm" style="border-color:#E5E5E3;" id="img-border">
+        <img src="C:\Ruan\portifolio-site\dash_emporio.png" alt="Preview do Dashboard de Vendas" class="w-full h-auto object-cover" />
+      </div>
+      </div>
+
+    <div class="space-y-8 text-base leading-relaxed" style="color:#4B5563;" id="content-text">
+      
+      <div>
+        <h2 class="text-xl font-semibold mb-3 section-title" style="color:#1A1A1A;">O Desafio</h2>
+        <p>No cenário de análise de dados para o varejo, o maior obstáculo técnico é a ausência de bases públicas que simulem a pressão e o estresse real de um negócio (sazonalidade, flutuação de estoque e comportamento de clientes). Bancos de dados estáticos não permitem testar KPIs complexos. O desafio foi projetar e construir, a partir do zero, um ecossistema de banco de dados relacional que fosse volumoso, tecnicamente robusto e realista o suficiente para suportar uma operação de Business Intelligence de alto nível para um Empório Gourmet.</p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold mb-3 section-title" style="color:#1A1A1A;">A Solução</h2>
+        <p>Desenvolvi um ecossistema completo de dados End-to-End, que funciona como um framework de arquitetura e análise. A solução contemplou:</p>
+		    <ul class="list-disc pl-5 space-y-2">
+          <li>Engine de Dados (Python): Algoritmo desenvolvido para gerar um histórico realista de mais de 40.000 pedidos, simulando probabilidades, pesos sazonais (meses fortes/fracos) e distribuição de horário comercial.</li>
+          <li>Modelagem Relacional (SQL): Arquitetura normalizada em SQLite contendo tabelas (Fatos e Dimensões) com integridade referencial e triggers de SGBD para regras de negócio.</li>
+          <li>Analytics Avançado: Conjunto de consultas complexas em SQL (utilizando Window Functions e agregações) para extrair métricas de Rentabilidade, Churn Rate, Curva ABC e eficácia de Cross-Sell (carrinho).</li>
+          <li>Visualização (Power BI): Dashboard interativo conectado diretamente ao banco relacional, transformando o volume transacional bruto em inteligência visual e gerencial.
+		    </ul>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold mb-3 section-title" style="color:#1A1A1A;">Resultados Obtidos</h2>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>Inteligência de Demanda: Validação visual das ondas anuais de faturamento, permitindo ao negócio estratégias preditivas de estoque pré-pico.</li>
+          <li>Otimização Operacional: Identificação dos horários de pico logístico (via Mapa de Calor), garantindo insumos para o dimensionamento correto de equipes de atendimento.</li>
+          <li>Retenção e Customer Success: Mapeamento granular da base, identificando a parcela de clientes com recorrência mensal absoluta (Clientes Diamante).</li>
+		      <li>Contribuição Open-Source: Disponibilização da arquitetura e do script gerador para a comunidade de dados testar pipelines e queries pesadas.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function applyDetailTheme() {
+    const isDark = localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const d = document.documentElement; 
+    const body = document.getElementById('body'); 
+    const nav = document.getElementById('navbar');
+    const imgBorder = document.getElementById('img-border');
+    
+    // Captura os dois botões
+    const dashBtn = document.getElementById('dash-btn'); 
+    const githubBtn = document.getElementById('github-btn'); 
+
+    if (isDark) {
+      d.classList.add('dark'); 
+      body.style.backgroundColor = '#0D1117'; 
+      nav.style.backgroundColor = 'rgba(13, 17, 23, 0.9)'; 
+      nav.style.borderColor = '#30363D';
+      document.getElementById('title').style.color = '#E6EDF3'; 
+      document.getElementById('header-border').style.borderColor = '#30363D';
+      document.getElementById('content-text').style.color = '#C9D1D9'; 
+      document.querySelectorAll('.section-title').forEach(el => el.style.color = '#E6EDF3');
+      
+     // Aplica as cores do modo ESCURO nos botões
+      if (dashBtn) {
+        dashBtn.style.background = '#E6EDF3'; 
+        dashBtn.style.color = '#0D1117';
+      }
+      if (githubBtn) {
+        githubBtn.style.background = '#E6EDF3'; 
+        githubBtn.style.color = '#0D1117';
+      }
+
+      if (imgBorder) imgBorder.style.borderColor = '#30363D';
+      
+    } else {
+      d.classList.remove('dark'); 
+      nav.style.backgroundColor = 'rgba(249, 248, 246, 0.9)';
+      document.getElementById('content-text').style.color = '#4B5563'; 
+      document.querySelectorAll('.section-title').forEach(el => el.style.color = '#1A1A1A');
+      
+      // Garante as cores do modo CLARO nos botões
+      if (dashBtn) {
+        dashBtn.style.background = '#1A1A1A'; 
+        dashBtn.style.color = '#FFFFFF';
+      }
+      if (githubBtn) {
+        githubBtn.style.background = '#1A1A1A'; 
+        githubBtn.style.color = '#FFFFFF';
+      }
+
+      if (imgBorder) imgBorder.style.borderColor = '#E5E5E3';
+    }
+  }
+  applyDetailTheme();
+</script>
+</body>
+</html>

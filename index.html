@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ruan Mendes — Analista de Dados</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            light: {
+              bg: '#F9F8F6',
+              surface: '#FFFFFF',
+              muted: '#F2F1EE',
+              text: '#1A1A1A',
+              sub: '#6B7280',
+              accent: '#3B6D9F',
+              border: '#E5E5E3',
+            },
+            dark: {
+              bg: '#0D1117',
+              surface: '#161B22',
+              muted: '#1C2230',
+              text: '#E6EDF3',
+              sub: '#8B949E',
+              accent: '#58A6FF',
+              border: '#30363D',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F9F8F6;
+      color: #1A1A1A;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .dark body, body.dark {
+      background-color: #0D1117;
+      color: #E6EDF3;
+    }
+    /* Smooth transitions */
+    .card, nav, footer, section { transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+    .dark ::-webkit-scrollbar-thumb { background: #30363D; }
+    /* Toggle button */
+    .toggle-btn {
+      width: 44px; height: 24px; border-radius: 12px;
+      position: relative; cursor: pointer;
+      transition: background-color 0.3s;
+      background-color: #D1D5DB;
+      border: none; outline: none;
+    }
+    .toggle-btn.active { background-color: #1A1A1A; }
+    .toggle-knob {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: white;
+      position: absolute; top: 3px; left: 3px;
+      transition: transform 0.3s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle-btn.active .toggle-knob { transform: translateX(20px); }
+/* Estilo inicial para o Fade In */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+/* Estado quando o elemento estiver visível */
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+    /* Skill icon */
+    .skill-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* Project card hover */
+    .project-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+    }
+    /* Tag pill */
+    .tag {
+      display: inline-flex; align-items: center;
+      font-size: 11px; font-weight: 500;
+      padding: 3px 10px; border-radius: 20px;
+      letter-spacing: 0.02em;
+    }
+    /* Nav link */
+    .nav-link {
+      font-size: 14px; font-weight: 400;
+      color: #6B7280;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #1A1A1A; }
+    .dark .nav-link:hover { color: #E6EDF3; }
+    /* Btn styles */
+    .btn-primary {
+      font-size: 13px; font-weight: 500;
+      padding: 8px 18px; border-radius: 8px;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: scale(0.985); }
+    .btn-outline {
+      font-size: 13px; font-weight: 500;
+      padding: 7px 18px; border-radius: 8px;
+      border: 1px solid;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover { transform: scale(0.985); }
+    /* Dashboard mockup placeholder */
+    .mock-img {
+      width: 100%; aspect-ratio: 16/9;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+  </style>
+</head>
+<body id="body">
+<!-- NAV -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b" style="background-color:#F9F8F6; border-color:#E5E5E3;">
+  <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+    <span class="text-sm font-semibold tracking-tight" style="color:#1A1A1A;" id="nav-logo">Ruan Mendes</span>
+    <div class="hidden md:flex items-center gap-7">
+      <a href="#projetos" class="nav-link">Projetos</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#contato" class="nav-link">Contato</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="theme-label" class="text-xs" style="color:#9CA3AF;">Claro</span>
+      <button class="toggle-btn" id="toggle" onclick="toggleTheme()" aria-label="Alternar tema">
+        <div class="toggle-knob"></div>
+      </button>
+      <span class="text-xs" style="color:#9CA3AF;">Escuro</span>
+    </div>
+  </div>
+</nav>
+<!-- HERO -->
+<section class="pt-32 pb-24 px-6">
+  <div class="max-w-3xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border text-xs font-medium" style="border-color:#E5E5E3; color:#6B7280;" id="hero-badge">
+      <span style="width:6px;height:6px;border-radius:50%;background:#34D399;display:inline-block;"></span>
+      Disponível para novos projetos
+    </div>
+    <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6 tracking-tight" style="letter-spacing: -0.03em; color:#1A1A1A;" id="hero-title">
+      De dados brutos<br/>a insights reais.
+    </h1>
+    <p class="text-lg leading-relaxed max-w-xl mx-auto mb-10" style="color:#6B7280;" id="hero-desc">
+      Analista de Dados especializado em transformar conjuntos complexos de dados em decisões de negócio claras, acionáveis e visualmente comunicadas.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="#projetos" class="btn-primary text-center" style="background:#1A1A1A; color:#FFFFFF;" id="cta-primary">Ver projetos</a>
+      <a href="#contato" class="btn-outline text-center" style="border-color:#E5E5E3; color:#1A1A1A;" id="cta-secondary">Entre em contato</a>
+    </div>
+  </div>
+</section>
+<!-- DIVIDER -->
+<div class="max-w-5xl mx-auto px-6"><div class="border-t" style="border-color:#E5E5E3;" id="div1"></div></div>
+<!-- PROJETOS -->
+<section id="projetos" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="mb-12">
+      <p class="text-xs uppercase tracking-widest font-medium mb-2" style="color:#9CA3AF;">Portfólio</p>
+      <h2 class="text-3xl font-bold tracking-tight" style="color:#1A1A1A; letter-spacing: -0.02em;" id="proj-title">Projetos em destaque</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Card 1 -->
+      <div class="project-card rounded-2xl border overflow-hidden" style="background:#FFFFFF; border-color:#E5E5E3;" id="card1">
+        <div class="mock-img">
+          <img src="C:\Ruan\portifolio-site\dash_emporio.png" alt="Dashboard Vendas" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6">
+          <div class="flex flex-wrap gap-1.5 mb-3">
+            <span class="tag" style="background:#EFF6FF; color:#1D4ED8;">Python</span>
+            <span class="tag" style="background:#F0FDF4; color:#15803D;">SQL</span>
+            <span class="tag" style="background:#FFF7ED; color:#C2410C;">Power BI</span>
+          </div>
+          <h3 class="text-base font-semibold mb-1.5" style="color:#1A1A1A;" id="c1-title">Engenharia de Dados & Analytics: Simulador de Varejo</h3>
+          <p class="text-sm leading-relaxed mb-5" style="color:#6B7280;">Modelagem de ecossistema relacional do zero com automação via Triggers e análise de mais de 40 mil pedidos. Uso de Window Functions avançadas em SQL para extrair KPIs executivos de Churn, Margem e Cross-Sell.</p>
+          <div class="flex gap-2">
+            <a href="projeto1-detalhes.html" class="btn-primary" style="background:#1A1A1A; color:#FFFFFF;" id="c1-btn1">Ver Detalhes</a>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="project-card rounded-2xl border overflow-hidden" style="background:#FFFFFF; border-color:#E5E5E3;" id="card2">
+        <div class="mock-img">
+          <img src="C:\Ruan\portifolio-site\dash_bolsafamilia.png" alt="Dashboard Bolsa Familia SP" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6">
+          <div class="flex flex-wrap gap-1.5 mb-3">
+            <span class="tag" style="background:#EFF6FF; color:#1D4ED8;">Python</span>
+            <span class="tag" style="background:#F0FDF4; color:#15803D;">Pandas</span>
+            <span class="tag" style="background:#FAF5FF; color:#C2410C;">Power BI</span>
+          </div>
+          <h3 class="text-base font-semibold mb-1.5" style="color:#1A1A1A;" id="c2-title">Pipeline ETL de Alto Volume: Bolsa Família SP</h3>
+          <p class="text-sm leading-relaxed mb-5" style="color:#6B7280;">Desenvolvimento scrpit para extrair, higienizar e modelar mais de 34 milhões de registros públicos. Transformação de 15 meses de dados brutos em insights estratégicos sobre o repasse de R$ 22.6 bilhões.</p>
+          <div class="flex gap-2">
+            <a href="projeto2-detalhes.html" class="btn-primary" style="background:#1A1A1A; color:#FFFFFF;" id="c2-btn1">Ver Detalhes</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- DIVIDER -->
+<div class="max-w-5xl mx-auto px-6"><div class="border-t" style="border-color:#E5E5E3;" id="div2"></div></div>
+<!-- SKILLS -->
+<section id="skills" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="mb-12">
+      <p class="text-xs uppercase tracking-widest font-medium mb-2" style="color:#9CA3AF;">Ferramentas</p>
+      <h2 class="text-3xl font-bold tracking-tight" style="color:#1A1A1A; letter-spacing: -0.02em;" id="skills-title">Stack técnico</h2>
+    </div>
+		<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+      <div class="rounded-2xl border p-6 flex flex-col items-center gap-3 text-center" style="background:#FFFFFF; border-color:#E5E5E3;" id="sk1">
+        <div class="skill-icon" style="background:#EFF6FF;">
+          <svg width="24" height="24" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M63.9 0C30.5 0 25.2 14.5 25.2 14.5L25.3 30.6H64.2V41.4H13.8C13.8 41.4 0 39.8 0 63.8C0 87.8 11.2 90.5 11.2 90.5L23.4 91.9V74.8C23.4 74.8 23.3 54 44.9 54H64.7C64.7 54 84.7 53.6 84.7 34V14.5C84.7 14.5 82.2 0 63.9 0ZM46.9 8.9C49.9 8.9 52.3 11.3 52.3 14.3C52.3 17.3 49.9 19.7 46.9 19.7C43.9 19.7 41.5 17.3 41.5 14.3C41.5 11.3 43.9 8.9 46.9 8.9Z" fill="#3B82F6"/>
+            <path d="M64 128C97.4 128 102.7 113.5 102.7 113.5L102.6 97.4H63.7V86.6H114.1C114.1 86.6 127.9 88.2 127.9 64.2C127.9 40.2 116.7 37.5 116.7 37.5L104.5 36.1V53.2C104.5 53.2 104.6 74 83 74H63.2C63.2 74 43.2 74.4 43.2 94V113.5C43.2 113.5 45.7 128 64 128ZM81 119.1C78 119.1 75.6 116.7 75.6 113.7C75.6 110.7 78 108.3 81 108.3C84 108.3 86.4 110.7 86.4 113.7C86.4 116.7 84 119.1 81 119.1Z" fill="#1D4ED8"/>
+          </svg>
+        </div>
+        <div>
+          <div class="font-semibold text-sm" style="color:#1A1A1A;" id="sk1-name">Python</div>
+          <div class="text-xs mt-0.5" style="color:#9CA3AF;">ETL & Automation</div>
+        </div>
+        <div class="flex gap-1 mt-1">
+          <div style="width:28px;height:3px;border-radius:2px;background:#1D4ED8;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#1D4ED8;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#1D4ED8;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#1D4ED8;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#E5E7EB;"></div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border p-6 flex flex-col items-center gap-3 text-center" style="background:#FFFFFF; border-color:#E5E5E3;" id="sk2">
+        <div class="skill-icon" style="background:#F0FDF4;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="font-semibold text-sm" style="color:#1A1A1A;" id="sk2-name">SQL</div>
+          <div class="text-xs mt-0.5" style="color:#9CA3AF;">Queries & Modeling</div>
+        </div>
+        <div class="flex gap-1 mt-1">
+          <div style="width:28px;height:3px;border-radius:2px;background:#16A34A;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#16A34A;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#16A34A;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#16A34A;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#E5E7EB;"></div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border p-6 flex flex-col items-center gap-3 text-center" style="background:#FFFFFF; border-color:#E5E5E3;" id="sk3">
+        <div class="skill-icon" style="background:#FFF7ED;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 12H4V20H8V12Z" fill="#F59E0B"/>
+            <path d="M14 4H10V20H14V4Z" fill="#D97706"/>
+            <path d="M20 8H16V20H20V8Z" fill="#B45309"/>
+          </svg>
+        </div>
+        <div>
+          <div class="font-semibold text-sm" style="color:#1A1A1A;" id="sk3-name">Power BI</div>
+          <div class="text-xs mt-0.5" style="color:#9CA3AF;">Dashboards & DAX</div>
+        </div>
+        <div class="flex gap-1 mt-1">
+          <div style="width:28px;height:3px;border-radius:2px;background:#F59E0B;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#F59E0B;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#F59E0B;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#E5E7EB;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#E5E7EB;"></div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border p-6 flex flex-col items-center gap-3 text-center" style="background:#FFFFFF; border-color:#E5E5E3;" id="sk4">
+        <div class="skill-icon" style="background:#FAF5FF;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 3H8V16H4V3Z" fill="#7C3AED"/>
+            <path d="M10 7H14V21H10V7Z" fill="#6D28D9"/>
+            <path d="M16 11H20V21H16V11Z" fill="#5B21B6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="font-semibold text-sm" style="color:#1A1A1A;" id="sk4-name">Pandas</div>
+          <div class="text-xs mt-0.5" style="color:#9CA3AF;">Wrangling & EDA</div>
+        </div>
+        <div class="flex gap-1 mt-1">
+          <div style="width:28px;height:3px;border-radius:2px;background:#7C3AED;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#7C3AED;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#7C3AED;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#E5E7EB;"></div>
+          <div style="width:28px;height:3px;border-radius:2px;background:#E5E7EB;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Secondary skills -->
+    <div class="mt-8 flex flex-wrap gap-2" id="secondary-skills">
+      <span class="tag" style="background:#F3F4F6; color:#374151; padding: 6px 14px; font-size:12px;">PostgreSQL</span>
+      <span class="tag" style="background:#F3F4F6; color:#374151; padding: 6px 14px; font-size:12px;">MySQL</span>
+      <span class="tag" style="background:#F3F4F6; color:#374151; padding: 6px 14px; font-size:12px;">Excel</span>
+      <span class="tag" style="background:#F3F4F6; color:#374151; padding: 6px 14px; font-size:12px;">Google Sheets</span>
+    </div>
+  </div>
+</section>
+<!-- DIVIDER -->
+<div class="max-w-5xl mx-auto px-6"><div class="border-t" style="border-color:#E5E5E3;" id="div3"></div></div>
+<!-- FOOTER / CONTACT -->
+<footer id="contato" class="py-16 px-6">
+  <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <div>
+      <p class="font-semibold text-sm mb-1" style="color:#1A1A1A;" id="footer-name">Ruan Mendes · Analista de Dados</p>
+      <p class="text-sm" style="color:#9CA3AF;">Ribeirão Preto - SP, Brasil · Disponível para freelance e CLT</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="https://wa.me/5516996055103" target="_blank" rel="noopener"
+        class="flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-colors"
+        style="border-color:#E5E5E3; color:#1A1A1A;" id="wa-btn"
+        onmouseover="this.style.background='#F3F4F6'" onmouseout="this.style.background='transparent'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.012c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="https://www.linkedin.com/in/ruan--mendes/" target="_blank" rel="noopener"
+        class="flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-colors"
+        style="border-color:#E5E5E3; color:#1A1A1A;" id="ln-btn"
+        onmouseover="this.style.background='#F3F4F6'" onmouseout="this.style.background='transparent'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/ruanpmendes" target="_blank" rel="noopener"
+        class="flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-colors"
+        style="border-color:#E5E5E3; color:#1A1A1A;" id="gh-btn"
+        onmouseover="this.style.background='#F3F4F6'" onmouseout="this.style.background='transparent'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.867 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.135 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</footer>
+<script>
+  const isDark = () => document.documentElement.classList.contains('dark');
+  function applyTheme(dark) {
+    const d = document.documentElement;
+    const body = document.getElementById('body');
+    const toggle = document.getElementById('toggle');
+    const navbar = document.getElementById('navbar');
+    if (dark) {
+      d.classList.add('dark');
+      body.style.backgroundColor = '#0D1117';
+      body.style.color = '#E6EDF3';
+      toggle.classList.add('active');
+      navbar.style.backgroundColor = '#0D1117';
+      navbar.style.borderColor = '#30363D';
+      document.getElementById('nav-logo').style.color = '#E6EDF3';
+    } else {
+      d.classList.remove('dark');
+      body.style.backgroundColor = '#F9F8F6';
+      body.style.color = '#1A1A1A';
+      toggle.classList.remove('active');
+      navbar.style.backgroundColor = '#F9F8F6';
+      navbar.style.borderColor = '#E5E5E3';
+      document.getElementById('nav-logo').style.color = '#1A1A1A';
+    }
+    // Text colors
+    const textMain = dark ? '#E6EDF3' : '#1A1A1A';
+    const textSub  = dark ? '#8B949E' : '#6B7280';
+    const textMuted= dark ? '#6B7280' : '#9CA3AF';
+    const bgCard   = dark ? '#161B22' : '#FFFFFF';
+    const bgMuted  = dark ? '#1C2230' : '#F3F4F6';
+    const border   = dark ? '#30363D' : '#E5E5E3';
+    const bgPage   = dark ? '#0D1117' : '#F9F8F6';
+    // Dividers
+    ['div1','div2','div3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.borderColor = border;
+    });
+    // Hero
+    const heroBadge = document.getElementById('hero-badge');
+    if (heroBadge) { heroBadge.style.borderColor = border; heroBadge.style.color = textSub; }
+    const heroTitle = document.getElementById('hero-title');
+    if (heroTitle) heroTitle.style.color = textMain;
+    const heroDesc = document.getElementById('hero-desc');
+    if (heroDesc) heroDesc.style.color = textSub;
+    // CTA buttons
+    const ctaPrimary = document.getElementById('cta-primary');
+    if (ctaPrimary) {
+      ctaPrimary.style.background = dark ? '#E6EDF3' : '#1A1A1A';
+      ctaPrimary.style.color = dark ? '#0D1117' : '#FFFFFF';
+    }
+    const ctaSecondary = document.getElementById('cta-secondary');
+    if (ctaSecondary) {
+      ctaSecondary.style.borderColor = border;
+      ctaSecondary.style.color = textMain;
+    }
+    // Stats
+    ['stat1','stat2','stat3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.color = textMain;
+    });
+    const statBorder = document.getElementById('stat-border');
+    if (statBorder) statBorder.style.borderColor = border;
+    // Section titles
+    ['proj-title','skills-title'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.color = textMain;
+    });
+    // Cards
+    for (let i = 1; i <= 4; i++) {
+      const card = document.getElementById('card' + i);
+      if (card) {
+        card.style.backgroundColor = bgCard;
+        card.style.borderColor = border;
+      }
+      const cTitle = document.getElementById('c' + i + '-title');
+      if (cTitle) cTitle.style.color = textMain;
+      const btn1 = document.getElementById('c' + i + '-btn1');
+      if (btn1) {
+        btn1.style.background = dark ? '#E6EDF3' : '#1A1A1A';
+        btn1.style.color = dark ? '#0D1117' : '#FFFFFF';
+      }
+      const btn2 = document.getElementById('c' + i + '-btn2');
+      if (btn2) {
+        btn2.style.borderColor = border;
+        btn2.style.color = textMain;
+      }
+    }
+    // Skill cards
+    for (let i = 1; i <= 4; i++) {
+      const sk = document.getElementById('sk' + i);
+      if (sk) {
+        sk.style.backgroundColor = bgCard;
+        sk.style.borderColor = border;
+      }
+      const skName = document.getElementById('sk' + i + '-name');
+      if (skName) skName.style.color = textMain;
+    }
+    // Secondary skills
+    const secSkills = document.getElementById('secondary-skills');
+    if (secSkills) {
+      secSkills.querySelectorAll('.tag').forEach(tag => {
+        tag.style.background = dark ? '#1C2230' : '#F3F4F6';
+        tag.style.color = dark ? '#8B949E' : '#374151';
+      });
+    }
+    // Footer
+    const footerName = document.getElementById('footer-name');
+    if (footerName) footerName.style.color = textMain;
+    ['wa-btn', 'ln-btn','gh-btn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.borderColor = border;
+        el.style.color = textMain;
+        el.onmouseover = () => el.style.background = dark ? '#1C2230' : '#F3F4F6';
+        el.onmouseout  = () => el.style.background = 'transparent';
+      }
+    });
+    // Nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.style.color = textSub;
+    });
+    // Skill icon backgrounds — keep in light, update in dark
+    const skIconBgs = [
+      {id:'sk1', light:'#EFF6FF', dark:'#1C2D3E'},
+      {id:'sk2', light:'#F0FDF4', dark:'#0D2B1A'},
+      {id:'sk3', light:'#FFF7ED', dark:'#2B1D0A'},
+      {id:'sk4', light:'#FAF5FF', dark:'#1E1530'},
+    ];
+    skIconBgs.forEach(({ id, light: l, dark: dk }) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const icon = el.querySelector('.skill-icon');
+        if (icon) icon.style.background = dark ? dk : l;
+      }
+    });
+  }
+  function toggleTheme() {
+    const willBeDark = !isDark();
+    localStorage.setItem('theme', willBeDark ? 'dark' : 'light');
+    applyTheme(willBeDark);
+  }
+  // Init
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved === 'dark' || (!saved && prefersDark));
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 8) {
+      nav.style.backdropFilter = 'blur(12px)';
+      nav.style.webkitBackdropFilter = 'blur(12px)';
+    } else {
+      nav.style.backdropFilter = 'none';
+    }
+  });
+</script>
+</body>
+</html>

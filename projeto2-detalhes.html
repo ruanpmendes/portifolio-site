@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Análise Geográfica de Clientes — João Silva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
+    }
+  </script>
+  <style>
+    * { -webkit-font-smoothing: antialiased; } html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background-color: #F9F8F6; color: #1A1A1A; transition: background-color 0.3s, color 0.3s; }
+    .dark body, body.dark { background-color: #0D1117; color: #E6EDF3; }
+    .btn-primary { display: inline-block; font-size: 14px; font-weight: 500; padding: 10px 24px; border-radius: 8px; transition: opacity 0.2s, transform 0.15s; text-decoration: none; }
+    .btn-primary:hover { opacity: 0.85; transform: scale(0.985); }
+    .nav-link { font-size: 14px; font-weight: 500; color: #6B7280; transition: color 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .nav-link:hover { color: #1A1A1A; } .dark .nav-link:hover { color: #E6EDF3; }
+  </style>
+</head>
+<body id="body">
+
+<nav class="fixed top-0 left-0 right-0 z-50 border-b bg-opacity-90 backdrop-blur-md" style="border-color:#E5E5E3;" id="navbar">
+  <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+    <a href="index.html" class="nav-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Voltar para o Portfólio
+    </a>
+  </div>
+</nav>
+
+<section class="pt-32 pb-24 px-6 min-h-screen">
+  <div class="max-w-3xl mx-auto">
+    
+    <div class="mb-10 border-b pb-8" style="border-color:#E5E5E3;" id="header-border">
+      <h1 class="text-4xl font-bold tracking-tight mb-4" id="title">Pipeline ETL de Alto Volume: Bolsa Família SP</h1>
+      <p class="text-lg leading-relaxed mb-6" style="color:#6B7280;" id="subtitle">
+        Desenvolvimento scrpit para extrair, higienizar e modelar mais de 34 milhões de registros públicos. Transformação de 15 meses de dados brutos em insights estratégicos sobre o repasse de R$ 22.6 bilhões.
+      </p>
+      
+      <a href="https://app.fabric.microsoft.com/view?r=eyJrIjoiNjJjYmE1ZWEtOGI3ZC00Y2U3LTk1MTQtYWUwNTlkMDA5MGVhIiwidCI6ImQ0ZjBiOGY0LTQ2NTAtNDNmYi05YWFiLWE1YmM4OGRkMDM0NSJ9" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#1A1A1A; color:#FFFFFF;" id="dash-btn">
+        Ver Dashboard Completo
+        <svg class="inline ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+
+      <a href="https://github.com/ruanpmendes/analise-bolsa-familia-sp" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#1A1A1A; color:#FFFFFF;" id="github-btn">
+        Repositório no GitHub
+        <svg class="inline ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+      
+      <div class="mt-8 rounded-xl overflow-hidden border shadow-sm" style="border-color:#E5E5E3;" id="img-border">
+        <img src="C:\Ruan\portifolio-site\dash_bolsafamilia.png" alt="Preview da Análise Geográfica" class="w-full h-auto object-cover" />
+      </div>
+    </div>
+
+    <div class="space-y-8 text-base leading-relaxed" style="color:#4B5563;" id="content-text">
+      <div>
+        <h2 class="text-xl font-semibold mb-3 section-title" style="color:#1A1A1A;">O Desafio</h2>
+        <p>Bases de dados governamentais são historicamente conhecidas por sua despadronização e tamanho massivo, tornando inviável o processamento por ferramentas tradicionais de escritório (como o Excel). O desafio consistiu em extrair e ingerir a base de dados nacional do programa Bolsa Família, construindo uma esteira capaz de suportar esse volume gigantesco para, em seguida, higienizar e modelar as informações específicas do Estado de São Paulo, criando uma arquitetura escalável para responder rapidamente a perguntas socioeconômicas complexas da região.</p>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-3 section-title" style="color:#1A1A1A;">A Solução</h2>
+        <p>Construção de um pipeline automatizado de extração, transformação e carga (ETL), focado no tratamento de Big Data e escalabilidade de relatórios:</p>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>Processamento Massivo (Python & Pandas): Desenvolvimento de scripts robustos para ingerir, consolidar e particionar 15 meses de arquivos governamentais de âmbito nacional. Implementação de lógica de filtragem avançada para isolar os dados do estado de São Paulo, estruturando com sucesso uma base final consolidada com mais de 34 milhões de registros brutos.</li>
+          <li>Engenharia de Banco de Dados (SQLite & SQLAlchemy): Ingestão automatizada dos dados higienizados em um banco relacional, incluindo o desenvolvimento de rotinas em script para a geração de uma Dimensão de Tempo customizada (dCalendario).</li>
+          <li>Modelagem Dimensional: Preparação e estruturação da arquitetura em Star Schema, garantindo alta performance analítica nas agregações finais.</li>
+          <li>Business Intelligence (Power BI): Desenvolvimento de análises exploratórias (EDA) para mapear a capilaridade e a distribuição dos repasses através de painéis visuais.</li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-3 section-title" style="color:#1A1A1A;">Resultados Obtidos</h2>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>Eficiência de Processamento: Eliminação do gargalo de hardware ao migrar o tratamento de dados de nível nacional para o ecossistema Python, garantindo uma esteira ETL automatizada, escalável e livre de falhas humanas.</li>
+          <li>Mapeamento Financeiro (EDA): Rastreamento preciso da distribuição de R$ 22,6 bilhões repassados aos beneficiários no estado de São Paulo.</li>
+          <li>Inteligência Geográfica e Insights: Comprovação técnica da proporção de repasses do programa, revelando uma distribuição de 48,9% para a Região Metropolitana versus 51,1% para o Interior do estado, além do cálculo acurado do Ticket Médio por município.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function applyDetailTheme() {
+    const isDark = localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const d = document.documentElement; 
+    const body = document.getElementById('body'); 
+    const nav = document.getElementById('navbar');
+    const imgBorder = document.getElementById('img-border');
+    
+    // Captura os dois botões
+    const dashBtn = document.getElementById('dash-btn'); 
+    const githubBtn = document.getElementById('github-btn'); 
+
+    if (isDark) {
+      d.classList.add('dark'); 
+      body.style.backgroundColor = '#0D1117'; 
+      nav.style.backgroundColor = 'rgba(13, 17, 23, 0.9)'; 
+      nav.style.borderColor = '#30363D';
+      document.getElementById('title').style.color = '#E6EDF3'; 
+      document.getElementById('header-border').style.borderColor = '#30363D';
+      document.getElementById('content-text').style.color = '#C9D1D9'; 
+      document.querySelectorAll('.section-title').forEach(el => el.style.color = '#E6EDF3');
+      
+     // Aplica as cores do modo ESCURO nos botões
+      if (dashBtn) {
+        dashBtn.style.background = '#E6EDF3'; 
+        dashBtn.style.color = '#0D1117';
+      }
+      if (githubBtn) {
+        githubBtn.style.background = '#E6EDF3'; 
+        githubBtn.style.color = '#0D1117';
+      }
+
+      if (imgBorder) imgBorder.style.borderColor = '#30363D';
+      
+    } else {
+      d.classList.remove('dark'); 
+      nav.style.backgroundColor = 'rgba(249, 248, 246, 0.9)';
+      document.getElementById('content-text').style.color = '#4B5563'; 
+      document.querySelectorAll('.section-title').forEach(el => el.style.color = '#1A1A1A');
+      
+      // Garante as cores do modo CLARO nos botões
+      if (dashBtn) {
+        dashBtn.style.background = '#1A1A1A'; 
+        dashBtn.style.color = '#FFFFFF';
+      }
+      if (githubBtn) {
+        githubBtn.style.background = '#1A1A1A'; 
+        githubBtn.style.color = '#FFFFFF';
+      }
+
+      if (imgBorder) imgBorder.style.borderColor = '#E5E5E3';
+    }
+  }
+  applyDetailTheme();
+</script>
+</body>
+</html>

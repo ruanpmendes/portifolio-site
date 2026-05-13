@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modelo Preditivo de Churn — João Silva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
+    }
+  </script>
+  <style>
+    * { -webkit-font-smoothing: antialiased; } html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background-color: #F9F8F6; color: #1A1A1A; transition: background-color 0.3s, color 0.3s; }
+    .dark body, body.dark { background-color: #0D1117; color: #E6EDF3; }
+    .btn-primary { display: inline-block; font-size: 14px; font-weight: 500; padding: 10px 24px; border-radius: 8px; transition: opacity 0.2s, transform 0.15s; text-decoration: none; }
+    .btn-primary:hover { opacity: 0.85; transform: scale(0.985); }
+    .nav-link { font-size: 14px; font-weight: 500; color: #6B7280; transition: color 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .nav-link:hover { color: #1A1A1A; } .dark .nav-link:hover { color: #E6EDF3; }
+  </style>
+</head>
+<body id="body">
+
+<nav class="fixed top-0 left-0 right-0 z-50 border-b bg-opacity-90 backdrop-blur-md" style="border-color:#E5E5E3;" id="navbar">
+  <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+    <a href="index.html" class="nav-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Voltar para o Portfólio
+    </a>
+  </div>
+</nav>
+
+<section class="pt-32 pb-24 px-6 min-h-screen">
+  <div class="max-w-3xl mx-auto">
+    
+    <div class="mb-10 border-b pb-8" style="border-color:#E5E5E3;" id="header-border">
+      <h1 class="text-4xl font-bold tracking-tight mb-4" id="title">Modelo Preditivo de Churn</h1>
+      <p class="text-lg leading-relaxed mb-6" style="color:#6B7280;" id="subtitle">
+        Random Forest com 94.5% de AUC-ROC sobre 84k registros. Identificou clientes de alto risco 30 dias antes do cancelamento.
+      </p>
+      
+      <a href="SEU_LINK_DO_DASHBOARD_AQUI" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#1A1A1A; color:#FFFFFF;" id="dash-btn">
+        Ver Modelo Completo
+        <svg class="inline ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+
+      <div class="mt-8 rounded-xl overflow-hidden border shadow-sm" style="border-color:#E5E5E3;" id="img-border">
+        <img src="sua-imagem.png" alt="Preview do Modelo de Churn" class="w-full h-auto object-cover" />
+      </div>
+    </div>
+
+    <div class="space-y-8 text-base leading-relaxed" style="color:#4B5563;" id="content-text">
+      <div>
+        <h2 class="text-xl font-semibold mb-3 section-title" style="color:#1A1A1A;">O Desafio</h2>
+        <p>A taxa de evasão de clientes (churn) estava impactando diretamente a receita recorrente. O time de retenção operava de forma reativa, entrando em contato apenas quando o cliente já demonstrava a intenção clara de cancelar o serviço.</p>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-3 section-title" style="color:#1A1A1A;">A Solução</h2>
+        <p>Desenvolvi um modelo de Machine Learning utilizando Random Forest (via Scikit-learn) treinado com dados históricos de mais de 84 mil registros (extraídos com SQL). O algoritmo avaliava padrões de uso, frequência de compras, inatividade e NPS para calcular a probabilidade de cancelamento.</p>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-3 section-title" style="color:#1A1A1A;">Resultados Obtidos</h2>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>Precisão preditiva alta, atingindo 94.5% de AUC-ROC.</li>
+          <li>Capacidade de identificar perfis de risco com 30 dias de antecedência.</li>
+          <li>Aumento na eficácia das campanhas de retenção, permitindo atuação proativa da equipe de atendimento.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function applyDetailTheme() {
+    const isDark = localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const d = document.documentElement; 
+    const body = document.getElementById('body'); 
+    const nav = document.getElementById('navbar');
+    const imgBorder = document.getElementById('img-border');
+
+    if (isDark) {
+      d.classList.add('dark'); 
+      body.style.backgroundColor = '#0D1117'; 
+      nav.style.backgroundColor = 'rgba(13, 17, 23, 0.9)'; 
+      nav.style.borderColor = '#30363D';
+      document.getElementById('title').style.color = '#E6EDF3'; 
+      document.getElementById('header-border').style.borderColor = '#30363D';
+      
+      // Deixa os parágrafos mais claros no modo escuro
+      document.getElementById('content-text').style.color = '#C9D1D9'; 
+      
+      // Agora o JS vai achar os títulos e pintá-los de branco
+      document.querySelectorAll('.section-title').forEach(el => el.style.color = '#E6EDF3');
+      
+      const dashBtn = document.getElementById('dash-btn'); 
+      dashBtn.style.background = '#E6EDF3'; 
+      dashBtn.style.color = '#0D1117';
+      if (imgBorder) imgBorder.style.borderColor = '#30363D';
+      
+    } else {
+      d.classList.remove('dark'); 
+      nav.style.backgroundColor = 'rgba(249, 248, 246, 0.9)';
+      
+      // Garante que no modo claro, as cores voltem ao normal
+      document.getElementById('content-text').style.color = '#4B5563'; 
+      document.querySelectorAll('.section-title').forEach(el => el.style.color = '#1A1A1A');
+      
+      if (imgBorder) imgBorder.style.borderColor = '#E5E5E3';
+    }
+  }
+  applyDetailTheme();
+</script>
+</body>
+</html>
